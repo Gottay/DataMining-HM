@@ -10,13 +10,25 @@ wine = pd.DataFrame(pd.read_csv('winemag-data_first150k.csv'))
 
 #标称属性，每个可能取值的频数
 print(wine['country'].value_counts())
+'''
 print(wine['designation'].value_counts())
 print(wine['province'].value_counts())
 print(wine['region_1'].value_counts())
 print(wine['region_2'].value_counts())
 print(wine['variety'].value_counts())
 print(wine['winery'].value_counts())
-
+'''
+#country属性直方图
+plt.hist(x=wine['country'].dropna(), bins=50, edgecolor='black')
+# 添加x轴和y轴标签
+plt.xlabel('country')
+plt.ylabel('frequency')
+# 添加标题
+plt.title('Wine-Country distribution')
+plt.xticks(rotation=90)
+plt.tick_params(labelsize=6)
+plt.savefig('./wineResult/country_distribution_hist.png')
+plt.show()
 
 #######################
 #输出各属性的缺省值情况
@@ -27,7 +39,7 @@ print(wine.isna().sum())
 print(wine['price'].describe())
 print(wine['points'].describe())
 
-
+'''
 #price属性直方图
 plt.hist(x=wine['price'], bins=100, edgecolor='black')
 # 添加x轴和y轴标签
@@ -246,5 +258,5 @@ priceNa.boxplot(sym='o')
 plt.ylabel('price')
 plt.savefig('./wineResult/price_relative_box.png')
 plt.show()
-
+'''
 
