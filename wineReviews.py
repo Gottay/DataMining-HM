@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 wine = pd.DataFrame(pd.read_csv('winemag-data_first150k.csv'))
 
+'''
 #标称属性，每个可能取值的频数
 print(wine['country'].value_counts())
 print(wine['designation'].value_counts())
@@ -93,12 +94,13 @@ plt.scatter(x_label, sorted_)
 stats.probplot(wine['points'], dist="norm", plot=plt)
 plt.savefig('./wineResult/points_qq.png')
 plt.show()
-
+'''
 
 #原始数据集（去重处理后）
 wineV2 = pd.DataFrame(pd.read_csv('winemag-data-130k-v2.csv'))
 
-#删除
+'''
+#price属性删除缺失值
 #直方图
 plt.hist(wine['price'].dropna(), bins=100, edgecolor='black')
 # 添加x轴和y轴标签
@@ -118,6 +120,33 @@ plt.title('Wine-Price distribution')
 plt.savefig('./wineResult/priceCom_hist.png')
 plt.show()
 
+
+#country属性删除缺失值
+#直方图
+plt.hist(wine['country'].dropna(), bins=50, edgecolor='black')
+# 添加x轴和y轴标签
+plt.xlabel('country')
+plt.ylabel('frequency')
+# 添加标题
+plt.title('Wine-Country distribution')
+plt.xticks(rotation=90)
+plt.tick_params(labelsize=6)
+plt.savefig('./wineResult/country_delete_hist.png')
+plt.show()
+#原始
+plt.hist(wineV2['country'].dropna(), bins=100, edgecolor='black')
+# 添加x轴和y轴标签
+plt.xlabel('country')
+plt.ylabel('frequency')
+# 添加标题
+plt.title('Wine-Country distribution')
+plt.xticks(rotation=90)
+plt.tick_params(labelsize=6)
+plt.savefig('./wineResult/countryCom_hist.png')
+plt.show()
+
+'''
+'''
 #Q-Q图
 sorted_ = np.sort(wine['price'].dropna())
 yvals = np.arange(len(sorted_))/float(len(sorted_))
@@ -152,11 +181,9 @@ plt.savefig('./wineResult/priceCom_box.png')
 plt.show()
 
 
-
-#最高频率
+#price属性最高频率
 #直方图
 wine = pd.DataFrame(pd.read_csv('winemag-data_first150k.csv'))
-
 
 plt.hist(wine['price'].fillna(wine['price'].interpolate(missing_values='NaN', strategy='mode', axis=0, verbose=0, copy=True)),
          bins=100, edgecolor='black')
@@ -168,6 +195,21 @@ plt.title('Wine-Price distribution')
 plt.savefig('./wineResult/price_mode_hist.png')
 plt.show()
 
+
+#country属性最高频率填充缺失值
+#直方图
+plt.hist(wine['country'].fillna('US'), bins=50, edgecolor='black')
+# 添加x轴和y轴标签
+plt.xlabel('country')
+plt.ylabel('frequency')
+# 添加标题
+plt.title('Wine-Country distribution')
+plt.xticks(rotation=90)
+plt.tick_params(labelsize=6)
+plt.savefig('./wineResult/country_mode_hist.png')
+plt.show()
+'''
+'''
 #Q-Q图
 sorted_ = np.sort(wine['price'].fillna(wine['price'].interpolate(missing_values='NaN', strategy='mode', axis=0, verbose=0, copy=True)))
 yvals = np.arange(len(sorted_))/float(len(sorted_))
@@ -200,7 +242,9 @@ plt.ylabel('frequency')
 plt.title('Wine-Price distribution')
 plt.savefig('./wineResult/price_median_hist.png')
 plt.show()
+'''
 
+'''
 #Q-Q图
 sorted_ = np.sort(wine['price'].interpolate(missing_values='NaN', strategy='median', axis=0, verbose=0, copy=True))
 yvals = np.arange(len(sorted_))/float(len(sorted_))
@@ -257,5 +301,27 @@ priceNa.boxplot(sym='o')
 plt.ylabel('price')
 plt.savefig('./wineResult/price_relative_box.png')
 plt.show()
+'''
 
+#随进森林实现填充country属性缺失值
+wine = pd.DataFrame(pd.read_csv('winemag-data_first150k.csv'))
+known_price = wine[wine['country'].notnull()]
+unknown_price = wine[wine['country'].isnull()]
+x = known_price[['points']]
+y = known_price[['country']]
+t_x = unknown_price[['points']]
+fc = RandomForestClassifier()
+fc.fit(x, y.values.ravel())
+pr = fc.predict(t_x)
+wine.loc[wine.country.isnull(), 'country'] = pr
 
+plt.hist(wine['country'], bins=50, edgecolor='black')
+# 添加x轴和y轴标签
+plt.xlabel('country')
+plt.ylabel('frequency')
+# 添加标题
+plt.title('Wine-Country distribution')
+plt.xticks(rotation=90)
+plt.tick_params(labelsize=6)
+plt.savefig('./wineResult/country_relative_hist.png')
+plt.show()
