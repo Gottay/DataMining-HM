@@ -13,8 +13,8 @@ DataMining互评作业1
 <p>分析报告内容包括 
 <p>一、数据<br>
 * 1.1 数据集选择<br>
-    Wine Reviews：winemag-data_first150k.csv<br>
-    Wine Reviews: winemag-data-130k-v2.csv(用于对比数据缺失处理的原始数据集使用)<br>
+    Wine Reviews：winemag-data_first150k.csv & winemag-data-130k-v2.csv(用于对比数据缺失处理的原始数据集使用)<br>
+    Trending YouTube Video Statistics：USvideos.csv CAvideos.csv INvideos.csv MXvideos.csv<br>
 * 1.2 编程语言：python<br>
 <br>
 <p>二、数据分析要求<br>
